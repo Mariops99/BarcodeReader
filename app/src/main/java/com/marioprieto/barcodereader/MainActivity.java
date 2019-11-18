@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(browserIntent);
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(this, "Ninguna aplicacion puede tratar este escaneo"
-                            + " por favor, instala una aplicacion que soporte el escaneo",  Toast.LENGTH_LONG).show();
+                            + " por favor, instala una aplicacion que soporte el escaneo.",  Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
