@@ -1,6 +1,7 @@
 package com.marioprieto.barcodereader;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,11 +19,14 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.io.File;
+
 
 public class QRGenerated extends AppCompatActivity {
 
-    public ImageView imageView;
+    ImageView imageView;
     Button save;
+    Button share;
     Drawable drawable;
     Uri URI;
     Bitmap bitmap;
@@ -35,12 +39,14 @@ public class QRGenerated extends AppCompatActivity {
         setContentView(R.layout.activity_qrgenerated);
         imageView = (ImageView) findViewById(R.id.qr);
         save = (Button) findViewById(R.id.save);
+        share = (Button) findViewById(R.id.share);
+
         Bundle bundle2 = this.getIntent().getExtras();
         String texto = bundle2.getString("texto");
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         textoguardado = texto;
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(texto, BarcodeFormat.QR_CODE,500,500);
+            BitMatrix bitMatrix = multiFormatWriter.encode(textoguardado, BarcodeFormat.QR_CODE,500,500);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             imageView.setImageBitmap(bitmap);
@@ -48,10 +54,18 @@ public class QRGenerated extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveQR();
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareQR();
             }
         });
     }
@@ -68,5 +82,13 @@ public class QRGenerated extends AppCompatActivity {
         );
         URI = Uri.parse(ImagePath);
         Toast.makeText(QRGenerated.this, "Imagen guardada correctamente.", Toast.LENGTH_LONG).show();
+    }
+
+    public void shareQR() {
+        saveQR();
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/png");
+        share.putExtra(Intent.EXTRA_STREAM, URI);
+        startActivity(Intent.createChooser(share,"Compartir mediante"));
     }
 }
