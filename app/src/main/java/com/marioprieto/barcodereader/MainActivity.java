@@ -51,9 +51,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void generateQr() {
-        Intent intent = new Intent(MainActivity.this, QRGenerated.class);
         Bundle bundle = new Bundle();
-        bundle.putString("texto", txtResultado.getText().toString());
+        String textoapasar = txtResultado.getText().toString();
+        bundle.putString("texto", textoapasar);
+        Intent intent = new Intent(MainActivity.this, QRGenerated.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         integrador.setPrompt("Escanear Código");
         integrador.setCameraId(0);
-        integrador.setBeepEnabled(true);
         integrador.setBarcodeImageEnabled(true);
 
         if (IntentIntegrator.QR_CODE.equals(integrador)) {
