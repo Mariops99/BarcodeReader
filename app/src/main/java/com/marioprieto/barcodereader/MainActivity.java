@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -84,8 +85,14 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 try {
                     if(result.getFormatName().equals("QR_CODE")) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getContents()));
-                        startActivity(browserIntent);
+                        boolean isValid = URLUtil.isValidUrl( result.getContents());
+                        if (isValid){ //Si es una URL
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getContents()));
+                            startActivity(browserIntent);
+                        } else { //Ya veré que hago si no es una URL
+
+                        }
+
                     } else {  //Comprobar BD
 
                     }
