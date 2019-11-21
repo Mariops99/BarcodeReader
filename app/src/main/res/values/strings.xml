@@ -10,4 +10,12 @@
     <string name="save">SAVE</string>
     <string name="textsaved"></string>
     <string name="share">SHARE</string>
+    <string name="description">Description:</string>
+    <string name="your_product_is">Your product is:</string>
+    <string name="code">Code:</string>
+    <string name="barcode_code">Barcode_CODE</string>
+    <string name="add_description">Add description</string>
+    <string name="edit">EDIT</string>
+    <string name="barcode_generated">Barcode_Generated</string>
+    <string name="stock">Stock:</string>
 </resources>
