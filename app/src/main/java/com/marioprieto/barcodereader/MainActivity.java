@@ -16,11 +16,13 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.*;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText txtResultado;
     Button btnEscanear, btnGenerate;
-    String texto;
+    JSONObject obj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
         btnEscanear = findViewById(R.id.scanner);
         btnGenerate = findViewById(R.id.generate);
 
+        try {
+            obj = new JSONObject("./Database.jon");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         btnEscanear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,11 +101,36 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     } else {  //Comprobar BD
+                        Boolean flag = null;
+
+                        for(int i = 0 ; i<=obj.length(); i++){
+                            if(obj.getString("code").equals(result.getContents())){
+                                flag = true; //Encontré un producto con ese código
+                            }
+                        }
+
+                        if(flag){ //Si tengo ese producto
+                            Bundle bundle = new Bundle();
+                            bundle.putString("code", result.getContents());
+                            bundle.putString("description", obj.getString("description"));
+                            bundle.putString("stock", String.valueOf(obj.getInt("stock")));
+                            Intent intent = new Intent(MainActivity.this, Reultado.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        } else { //No tengo ese producto
+                            Bundle bundle = new Bundle();
+                            bundle.putString("code", result.getContents());
+                            Intent intent = new Intent(MainActivity.this, NoResoult.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
 
                     }
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(this, "Ninguna aplicacion puede tratar este escaneo"
                             + " por favor, instala una aplicacion que soporte el escaneo.",  Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
