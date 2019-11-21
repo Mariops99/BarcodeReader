@@ -12,27 +12,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText txtResultado;
-    Button btnEscanear, btnSalir;
-
+    Button btnEscanear, btnGenerate;
+    String texto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtResultado = findViewById(R.id.resoult);
+        txtResultado = findViewById(R.id.get);
         btnEscanear = findViewById(R.id.scanner);
-        btnSalir = findViewById(R.id.exit);
+        btnGenerate = findViewById(R.id.generate);
+
 
         btnEscanear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,24 +38,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnSalir.setOnClickListener(new View.OnClickListener() {
+        btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                System.exit(0);
+                if(txtResultado.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(),"El conteido no puede estar vacio", Toast.LENGTH_SHORT).show();
+                } else {
+                    generateQr();
+                }
             }
         });
+    }
 
+    protected void generateQr() {
+        Intent intent = new Intent(MainActivity.this, QRGenerated.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("texto", txtResultado.getText().toString());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     protected void escanear() {
         IntentIntegrator integrador = new IntentIntegrator(this);
-        integrador.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
 
         integrador.setPrompt("Escanear Código");
         integrador.setCameraId(0);
         integrador.setBeepEnabled(true);
         integrador.setBarcodeImageEnabled(true);
+
+        if (IntentIntegrator.QR_CODE.equals(integrador)) {
+            integrador.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        } else if (IntentIntegrator.PRODUCT_CODE_TYPES.equals(integrador)) {
+            integrador.setDesiredBarcodeFormats(IntentIntegrator.PRODUCT_CODE_TYPES);
+        }
+
         integrador.initiateScan();
     }
 
@@ -69,10 +82,13 @@ public class MainActivity extends AppCompatActivity {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelado", Toast.LENGTH_LONG).show();
             } else {
-                txtResultado.setText(result.getContents());
                 try {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getContents()));
-                    startActivity(browserIntent);
+                    if(result.getFormatName().equals("QR_CODE")) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getContents()));
+                        startActivity(browserIntent);
+                    } else {  //Comprobar BD
+
+                    }
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(this, "Ninguna aplicacion puede tratar este escaneo"
                             + " por favor, instala una aplicacion que soporte el escaneo.",  Toast.LENGTH_LONG).show();

@@ -3,4 +3,10 @@
     <string name="www_marioprieto_com">www.marioprieto.com</string>
     <string name="exit">Exit</string>
     <string name="scanner">Scanner</string>
+    <string name="barcode">BARCODE</string>
+    <string name="qr">QR</string>
+    <string name="scan_barcode_or_qr">SCAN BARCODE OR QR</string>
+    <string name="generate_qr">Generate QR</string>
+    <string name="save">SAVE</string>
+    <string name="textsaved"></string>
 </resources>
