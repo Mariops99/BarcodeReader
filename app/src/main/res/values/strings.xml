@@ -18,4 +18,6 @@
     <string name="edit">EDIT</string>
     <string name="barcode_generated">Barcode_Generated</string>
     <string name="stock">Stock:</string>
+    <string name="no_product_found">No Product found</string>
+    <string name="add">Add</string>
 </resources>
