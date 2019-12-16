@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NoResoult"></activity>
+        <activity android:name=".QR_Resoult"></activity>
+        <activity android:name=".NoResoult" />
         <activity android:name=".Reultado" />
         <activity android:name=".QRGenerated" />
         <activity android:name=".MainActivity">

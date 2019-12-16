@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         btnGenerate = findViewById(R.id.generate);
 
         try {
-            obj = new JSONObject("./Database.jon");
+            obj = new JSONObject("./Database.json");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -97,7 +97,11 @@ public class MainActivity extends AppCompatActivity {
                             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getContents()));
                             startActivity(browserIntent);
                         } else { //Ya veré que hago si no es una URL
-
+                            Bundle bundle = new Bundle();
+                            bundle.putString("text", result.getContents());
+                            Intent intent = new Intent(MainActivity.this, QR_Resoult.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
                         }
 
                     } else {  //Comprobar BD
