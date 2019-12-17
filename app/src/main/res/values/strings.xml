@@ -20,4 +20,5 @@
     <string name="stock">Stock:</string>
     <string name="no_product_found">No Product found</string>
     <string name="add">Add</string>
+    <string name="go_back">GO BACK</string>
 </resources>

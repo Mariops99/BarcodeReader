@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".QR_Resoult"></activity>
         <activity android:name=".NoResoult" />
-        <activity android:name=".Reultado" />
+        <activity android:name=".Resultado" />
         <activity android:name=".QRGenerated" />
         <activity android:name=".MainActivity">
             <intent-filter>

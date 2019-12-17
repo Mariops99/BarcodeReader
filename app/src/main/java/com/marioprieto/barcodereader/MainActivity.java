@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
     EditText txtResultado;
     Button btnEscanear, btnGenerate;
-    JSONObject obj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +32,6 @@ public class MainActivity extends AppCompatActivity {
         btnEscanear = findViewById(R.id.scanner);
         btnGenerate = findViewById(R.id.generate);
 
-        try {
-            obj = new JSONObject("./Database.json");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         btnEscanear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,20 +99,15 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     } else {  //Comprobar BD
-                        Boolean flag = null;
+                        Boolean flag = true;
 
-                        for(int i = 0 ; i<=obj.length(); i++){
-                            if(obj.getString("code").equals(result.getContents())){
-                                flag = true; //Encontré un producto con ese código
-                            }
-                        }
 
-                        if(flag){ //Si tengo ese producto
+                        if(true){ //Si tengo ese producto
                             Bundle bundle = new Bundle();
                             bundle.putString("code", result.getContents());
-                            bundle.putString("description", obj.getString("description"));
-                            bundle.putString("stock", String.valueOf(obj.getInt("stock")));
-                            Intent intent = new Intent(MainActivity.this, Reultado.class);
+                            //bundle.putString("description", obj.getString("description"));
+                            //bundle.putString("stock", String.valueOf(obj.getInt("stock")));
+                            Intent intent = new Intent(MainActivity.this, Resultado.class);
                             intent.putExtras(bundle);
                             startActivity(intent);
                         } else { //No tengo ese producto
@@ -133,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(this, "Ninguna aplicacion puede tratar este escaneo"
                             + " por favor, instala una aplicacion que soporte el escaneo.",  Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
